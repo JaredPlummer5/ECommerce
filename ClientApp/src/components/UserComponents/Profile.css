@@ -1,0 +1,120 @@
+.profile-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.profile-sidebar {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+}
+
+.profile-sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.profile-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.profile-sidebar li {
+    padding: 10px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-sidebar li:hover {
+    background-color: #f0f0f0;
+}
+
+.profile-content {
+    flex: 3;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.order-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+
+.profile-details, .profile-orders, .profile-address {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.order-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+/* .profile-actions {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+} */
+
+.edit-profile-btn, .logout-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-profile-btn {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.edit-profile-btn:hover {
+    background-color: #45a049;
+}
+
+.logout-btn {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.logout-btn:hover {
+    background-color: #da190b;
+}
+
+.profile-separator {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.profile-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}

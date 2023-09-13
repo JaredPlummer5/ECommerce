@@ -14,6 +14,7 @@ namespace ECommerce.Models
 		{
 			Name = name;
 			Description = description;
+            
 
         }
 	}

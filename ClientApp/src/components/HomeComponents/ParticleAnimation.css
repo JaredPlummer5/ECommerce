@@ -1,0 +1,25 @@
+.particleContainer {
+    position: relative;
+    width: 800px;
+    height: 250px;  /* Adjusted height to match the canvas */
+    margin: 0 auto; /* Centers the container horizontally if needed */
+    overflow: hidden;
+    transform: translateX(150px); /* Moves the container 150px to the right */
+}
+
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #FFF;
+    border-radius: 50%;
+    transform: translate(var(--startX), var(--startY));
+    animation: moveToTarget 2.5s forwards;
+}
+
+@keyframes moveToTarget {
+    to {
+        transform: translate(var(--targetX), var(--targetY));
+    }
+}

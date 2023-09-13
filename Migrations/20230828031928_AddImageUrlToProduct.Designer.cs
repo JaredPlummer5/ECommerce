@@ -4,6 +4,7 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    partial class ECommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230828031928_AddImageUrlToProduct")]
+    partial class AddImageUrlToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,35 +98,18 @@ namespace ECommerce.Migrations
                         {
                             Id = "Admin-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4403b35f-b7e6-4f12-83f5-cb575d2d1d66",
+                            ConcurrencyStamp = "9c5b99ce-3b36-4939-9fb8-6c41a948cdc9",
                             Email = "ADMIN@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
                             Password = "Password123!",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMFElxKFnZaBf7T9n4tObiRkM6R/ez0/2iUtZ3OSZI3F8P/Xx6Ds4OW/QzDhzcr3/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPhf+ySzZuJkp5E+VgOfX6A1iDgDKL7O7OPNpG3fYC07zXbt75zO3l3tD/WNUQGEKQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e341b348-e226-4680-949c-d6abd299def2",
+                            SecurityStamp = "eb06d98c-dd7d-4590-9ed4-5c2978ebdaaf",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "Editor-id",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "4f387124-95cc-4260-9153-16db114317a9",
-                            Email = "editor@example.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "editor@example.com",
-                            NormalizedUserName = "EDITOR",
-                            Password = "Password123!",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEyia8DvEN0EtRu36hjy4WjuqqxIVjK9NfZheAdKtOozHFTk46bc6kGkdAw1OAD/4Q==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "e48b8709-d3ed-481d-8a39-6a861c8e8b67",
-                            TwoFactorEnabled = false,
-                            UserName = "Editor"
                         });
                 });
 
@@ -213,13 +199,6 @@ namespace ECommerce.Migrations
                             ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "editor",
-                            ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
-                            Name = "Editor",
-                            NormalizedName = "EDITOR"
                         });
                 });
 
@@ -250,45 +229,31 @@ namespace ECommerce.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1006,
+                            Id = 1004,
                             ClaimType = "permissions",
                             ClaimValue = "create",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 1007,
+                            Id = 1005,
                             ClaimType = "permissions",
                             ClaimValue = "update",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 1008,
+                            Id = 1006,
                             ClaimType = "permissions",
                             ClaimValue = "delete",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 1009,
+                            Id = 1007,
                             ClaimType = "permissions",
                             ClaimValue = "read",
                             RoleId = "admin"
-                        },
-                        new
-                        {
-                            Id = 1010,
-                            ClaimType = "permissions",
-                            ClaimValue = "create",
-                            RoleId = "editor"
-                        },
-                        new
-                        {
-                            Id = 1011,
-                            ClaimType = "permissions",
-                            ClaimValue = "update",
-                            RoleId = "editor"
                         });
                 });
 
@@ -358,11 +323,6 @@ namespace ECommerce.Migrations
                         {
                             UserId = "Admin-id",
                             RoleId = "Admin"
-                        },
-                        new
-                        {
-                            UserId = "Editor-id",
-                            RoleId = "Editor"
                         });
                 });
 
