@@ -4,6 +4,7 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    partial class ECommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230918011250_AddUsersCart")]
+    partial class AddUsersCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,6 +31,9 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CartId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -80,6 +86,8 @@ namespace ECommerce.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CartId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -95,16 +103,16 @@ namespace ECommerce.Migrations
                         {
                             Id = "Admin-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "221535af-1ad0-4e76-b4c8-d84917d9222a",
+                            ConcurrencyStamp = "d1f9b63c-20a6-4b6f-a1a7-a7cb6c0ac1ea",
                             Email = "ADMIN@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
                             Password = "Password123!",
-                            PasswordHash = "AQAAAAIAAYagAAAAEP+wnCfqBp5e2GiBCM53jHzK0fIpubT+V+puegJ+7ZhmbpB+Ya/Jv5JMzW0uT/3wlQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDvzb7aTiWZu9iTQt93V3T9MKycyI4b/9uSEPtfsEDGgubaAwg9YtGft6FKV+1svlA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "984c5bb3-9f93-4bed-9e12-10064d44e172",
+                            SecurityStamp = "dea0a122-17d5-44a4-8369-fe0d841b1a68",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
@@ -112,45 +120,19 @@ namespace ECommerce.Migrations
                         {
                             Id = "Editor-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3cf4058a-e1c5-49c0-96de-c8ae17e7c82a",
+                            ConcurrencyStamp = "0f2a488a-18d3-4b42-96f5-65d77c73a9c9",
                             Email = "editor@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "editor@example.com",
                             NormalizedUserName = "EDITOR",
                             Password = "Password123!",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHS+/Bl7fEFbGNQ/I7mGTRI+KgNnKP6xykwmmh+5wj1j6oHVJHkTfpUo6uGhzdyHCQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOQiCaVUOoKB5Yxnw8b+rCYfPZj5VpHQO/vTzmO70CaZIKxHfh5C32pC4RZCpaT7Ng==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a59dd478-f754-4429-a701-2848f6e4e6cb",
+                            SecurityStamp = "654cf448-9a35-4a60-935d-7bef171b11e8",
                             TwoFactorEnabled = false,
                             UserName = "Editor"
                         });
-                });
-
-            modelBuilder.Entity("ECommerce.Models.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsersCartId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UsersCartId");
-
-                    b.ToTable("CartItem");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Category", b =>
@@ -199,9 +181,14 @@ namespace ECommerce.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int?>("UsersCartId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UsersCartId");
 
                     b.ToTable("Products");
                 });
@@ -214,14 +201,10 @@ namespace ECommerce.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("UsersCart");
                 });
@@ -431,23 +414,13 @@ namespace ECommerce.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ECommerce.Models.CartItem", b =>
+            modelBuilder.Entity("ECommerce.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("ECommerce.Models.Product", "Product")
+                    b.HasOne("ECommerce.Models.UsersCart", "Cart")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CartId");
 
-                    b.HasOne("ECommerce.Models.UsersCart", "UsersCart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("UsersCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("UsersCart");
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Product", b =>
@@ -457,15 +430,10 @@ namespace ECommerce.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("ECommerce.Models.UsersCart", b =>
-                {
-                    b.HasOne("ECommerce.Models.ApplicationUser", "UserData")
-                        .WithOne("Cart")
-                        .HasForeignKey("ECommerce.Models.UsersCart", "UserId");
-
-                    b.Navigation("UserData");
+                    b.HasOne("ECommerce.Models.UsersCart", null)
+                        .WithMany("Users_Cart")
+                        .HasForeignKey("UsersCartId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -519,11 +487,6 @@ namespace ECommerce.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECommerce.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Cart");
-                });
-
             modelBuilder.Entity("ECommerce.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -531,7 +494,7 @@ namespace ECommerce.Migrations
 
             modelBuilder.Entity("ECommerce.Models.UsersCart", b =>
                 {
-                    b.Navigation("CartItems");
+                    b.Navigation("Users_Cart");
                 });
 #pragma warning restore 612, 618
         }

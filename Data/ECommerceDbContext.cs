@@ -11,6 +11,7 @@ namespace ECommerce.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<UsersCart> Carts { get; set; }
 
 
         public ECommerceDbContext(DbContextOptions options) : base(options)
@@ -21,6 +22,10 @@ namespace ECommerce.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>()
+        .HasOne(a => a.Cart) // Navigation property in ApplicationUser pointing to UsersCart
+        .WithOne(u => u.UserData) // Navigation property in UsersCart pointing to ApplicationUser
+        .HasForeignKey<UsersCart>(uc => uc.UserId); // The foreign key in UsersCart pointing to ApplicationUser
             SeedRole(modelBuilder, "Admin", "create", "update", "delete", "read");
             var hasher = new PasswordHasher<ApplicationUser>();
             var AdminUser = new ApplicationUser
@@ -54,7 +59,7 @@ namespace ECommerce.Data
                 Email = "editor@example.com",
                 NormalizedEmail = "editor@example.com",
                 Password = "Password123!",
-                Roles = new string[] {"Editor"},
+                Roles = new string[] { "Editor" },
                 PasswordHash = hasher.HashPassword(null, "Password123!")
 
             };
@@ -97,6 +102,8 @@ namespace ECommerce.Data
 
             modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaims);
         }
+
+        public DbSet<ECommerce.Models.UsersCart> UsersCart { get; set; } = default!;
 
     }
 }

@@ -6,6 +6,7 @@
     align-items: center;      /* Vertical Centering */
     height: 100vh;            /* Take up the full viewport height */
     background: linear-gradient(135deg, #84FAB0, #8FD3F4);  /* Soft vibrant gradient */
+    
     position: relative;
     overflow: hidden;
 }

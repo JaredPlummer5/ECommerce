@@ -1,9 +1,12 @@
-﻿using ECommerce.Models;
+﻿using System.Net;
+using ECommerce.Models;
 using ECommerce.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using ECommerce.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Controllers
 {
@@ -17,9 +20,12 @@ namespace ECommerce.Controllers
         private SignInManager<ApplicationUser> signInManager;
         private JwtTokenService tokenService;
 
-        public UsersController(UserManager<ApplicationUser> manager, JwtTokenService _tokenService, SignInManager<ApplicationUser> _signInManager)
+        private ECommerceDbContext context;
+
+        public UsersController(ECommerceDbContext Context, UserManager<ApplicationUser> manager, JwtTokenService _tokenService, SignInManager<ApplicationUser> _signInManager)
         {
 
+            context = Context;
             userManager = manager;
             tokenService = _tokenService;
             signInManager = _signInManager;
@@ -54,7 +60,8 @@ namespace ECommerce.Controllers
                     Id = user.Id,
                     UserName = user.UserName,
                     Token = await tokenService.GetToken(user, System.TimeSpan.FromMinutes(15)),
-                    Roles = roles
+                    Roles = roles,
+                    Cart = user.Cart
                 };
 
             }
@@ -94,12 +101,13 @@ namespace ECommerce.Controllers
             {
                 await signInManager.SignInAsync(user, null);
 
-                return new ApplicationUser()
+                return new ApplicationUser
                 {
                     Id = user.Id,
+                    UserName = user.UserName,
                     Token = await tokenService.GetToken(user, System.TimeSpan.FromMinutes(15)),
-                    Roles = user.Roles
-
+                    Roles = user.Roles,
+                    Cart = user.Cart
                 };
             }
             if (user == null)
@@ -109,6 +117,58 @@ namespace ECommerce.Controllers
 
             return BadRequest();
         }
+        //Update the user's Cart
+[HttpPost("{userId}")]
+public async Task<IActionResult> AddToCart(string userId, int productId)
+{
+    // Find the user and include their cart
+// Find the user, include their cart, and also include the products associated with each cart item
+var user = await userManager.Users.Include(u => u.Cart)
+                                  .Include(u => u.Cart.CartItems)
+                                  .ThenInclude(ci => ci.Product)
+                                  .FirstOrDefaultAsync(u => u.Id == userId);
+
+
+    if (user == null)
+    {
+        return NotFound("User not found");
+    }
+
+  // Fetch the product from the database
+var product = await context.Products.FindAsync(productId);
+
+
+    // Initialize the user's cart if it doesn't exist
+    if (user.Cart == null)
+    {
+        user.Cart = new UsersCart();
+        context.UsersCart.Add(user.Cart);  // Let EF know it's a new cart
+    }
+
+    // Check if the product is already in the user's cart
+    var cartItem = user.Cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+    if (cartItem == null)
+    {
+        // If not, add a new cart item with quantity 1
+        cartItem = new CartItem
+        {
+            Product = product,
+            Quantity = 1
+        };
+        user.Cart.CartItems.Add(cartItem);
+    }
+    else
+    {
+        // If it is, increment the quantity
+        cartItem.Quantity++;
+    }
+
+    // Save changes
+    await context.SaveChangesAsync();
+
+    return Ok(user);
+}
+
 
         [Authorize(Policy = "create")]
         [HttpGet("me")]

@@ -109,6 +109,9 @@ export default function ProductCard(props) {
                         </Card.Text>
 
                         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+                            <Button >
+                                Add to Cart
+                            </Button>
                             {
                                 props?.decodedUser?.roles?.includes("Editor") &&
                                 <Button onClick={() => {

@@ -4,6 +4,7 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    partial class ECommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230917030513_Cart1")]
+    partial class Cart1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,16 +98,16 @@ namespace ECommerce.Migrations
                         {
                             Id = "Admin-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "221535af-1ad0-4e76-b4c8-d84917d9222a",
+                            ConcurrencyStamp = "f9c459a8-7580-46ac-8bc2-c590d1feade0",
                             Email = "ADMIN@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
                             Password = "Password123!",
-                            PasswordHash = "AQAAAAIAAYagAAAAEP+wnCfqBp5e2GiBCM53jHzK0fIpubT+V+puegJ+7ZhmbpB+Ya/Jv5JMzW0uT/3wlQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHdht2MdCiEFDf9hDiwFlG9FgQ2/idUR/IQy8ekXE4ZqJsJNgV1+VjmEuMH6HWpAVQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "984c5bb3-9f93-4bed-9e12-10064d44e172",
+                            SecurityStamp = "44ffb1c3-674e-4c8e-9094-ed2133328424",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
@@ -112,45 +115,19 @@ namespace ECommerce.Migrations
                         {
                             Id = "Editor-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3cf4058a-e1c5-49c0-96de-c8ae17e7c82a",
+                            ConcurrencyStamp = "8959286b-c9ce-4921-a9d9-788b870ac02c",
                             Email = "editor@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "editor@example.com",
                             NormalizedUserName = "EDITOR",
                             Password = "Password123!",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHS+/Bl7fEFbGNQ/I7mGTRI+KgNnKP6xykwmmh+5wj1j6oHVJHkTfpUo6uGhzdyHCQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK6NoxA6MzZ8ccDNnowo6j1wfIXTsQYatcj7QxQpXpDaMsc6bkPHyxRV9guWuBX9Og==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a59dd478-f754-4429-a701-2848f6e4e6cb",
+                            SecurityStamp = "f9324a3d-13d3-4740-b2e1-3ffa59794b6f",
                             TwoFactorEnabled = false,
                             UserName = "Editor"
                         });
-                });
-
-            modelBuilder.Entity("ECommerce.Models.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsersCartId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UsersCartId");
-
-                    b.ToTable("CartItem");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Category", b =>
@@ -182,6 +159,9 @@ namespace ECommerce.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -201,29 +181,11 @@ namespace ECommerce.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("ECommerce.Models.UsersCart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
-
-                    b.ToTable("UsersCart");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -431,41 +393,17 @@ namespace ECommerce.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ECommerce.Models.CartItem", b =>
-                {
-                    b.HasOne("ECommerce.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECommerce.Models.UsersCart", "UsersCart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("UsersCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("UsersCart");
-                });
-
             modelBuilder.Entity("ECommerce.Models.Product", b =>
                 {
+                    b.HasOne("ECommerce.Models.ApplicationUser", null)
+                        .WithMany("Cart")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("ECommerce.Models.Category", null)
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ECommerce.Models.UsersCart", b =>
-                {
-                    b.HasOne("ECommerce.Models.ApplicationUser", "UserData")
-                        .WithOne("Cart")
-                        .HasForeignKey("ECommerce.Models.UsersCart", "UserId");
-
-                    b.Navigation("UserData");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -527,11 +465,6 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("ECommerce.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("ECommerce.Models.UsersCart", b =>
-                {
-                    b.Navigation("CartItems");
                 });
 #pragma warning restore 612, 618
         }

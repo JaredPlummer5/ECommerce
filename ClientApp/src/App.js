@@ -9,6 +9,7 @@ import Home from "./components/HomeComponents/Home";
 import Login from './components/UserComponents/Login';
 import Profile from './components/UserComponents/Profile';
 import Register from './components/UserComponents/Register';
+import Cart from './components/UserComponents/Cart';
 import Cookies from 'js-cookie';
 
 
@@ -118,10 +119,6 @@ export default function App() {
         }
     }, [setUserData]);
 
-//     if (userData != null) {
-    
-//         console.log(userData);
-// }
 
 
     return (
@@ -240,6 +237,17 @@ export default function App() {
                                 setUserData={setUserData}
                             />}
                     />}
+                
+                <Route
+                    key={1235}
+                    path={'/Cart'}
+                    element={
+                        <Cart
+                            
+                    
+                        />
+                    }
+                />
 
             </Routes>
 

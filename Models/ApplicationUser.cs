@@ -7,6 +7,7 @@ namespace ECommerce.Models
 {
     public class ApplicationUser : IdentityUser
     {
+      
 
 
         public string Password { get; set; }
@@ -19,6 +20,8 @@ namespace ECommerce.Models
 
         [NotMapped]
         public IList<string>? Roles { get; set; }
+
+        public UsersCart? Cart { get; set; }
 
     
     }
